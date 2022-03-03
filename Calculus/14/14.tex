@@ -23,6 +23,16 @@
   \array{#1}}
 \makeatother
 
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\makeatletter 
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
 \newcommand\y{\cellcolor{blue!10}}
 
 \usepackage{tabularray}
@@ -216,15 +226,15 @@ The domain $D$ includes points arbitrarily close to $(a,b)$.
   \end{minipage}
 
   {\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} Does this limit exist?
-  \[\lim_{(x,y) \to (0,0)} f(x,y)\]
+  \[\lim_{(x,y) \to (0,0)} f(x,y) = xy/(x^2 + y^2 )\]
 
-    \begin{minipage}[]{0.35\linewidth}
+    \begin{minipage}[]{0.37\linewidth}
       \begin{center}
         \includegraphics[width = 5 cm]{./images/lim3g2.png} 
       \end{center}
     \end{minipage}
   \begin{minipage}[]{0.6\linewidth}
-    $\square$ If $y = 0$, then $f(x,0) = 0/ x2 $
+    $\square$ If $y = 0$, then $f(x,0) = 0/ x^2 $
     \begin{center}
       $f(x,y) \to 0 \quad \text{as} \quad (x,y) \to (0,0)$ along the $x$-axis
     \end{center}
@@ -233,6 +243,52 @@ The domain $D$ includes points arbitrarily close to $(a,b)$.
       $f(x,y) \to 0 \quad \text{as} \quad (x,y) \to (0,0)$ along the $y$-axis
     \end{center}
   \end{minipage}
-  
-    
+Although we have obtained identical limits along the axes, that does not show the answer is 0.  \\
+$\square$ Let's approach $(0,0)$ along another line, say $y = x$. For all $x \ne 0$,
+\[f(x,x) = \frac{x^2 }{x^2 + x^2 } = \frac{1}{2}\]
+Therefore $\quad f(x,y) \to \frac{1 }{2 } \quad \text{as} \quad (x,y) \to (0,0)$  along $y = x$. The given limit \textbf{does not exist}. 
+
+The ridge that occurs above the line $y = x$ correspond to the fact that $f(x,y) = \frac{1 }{2 }$ for all points $(x,y)$ on that line \textbf{except the origin}.
+\begin{center}
+  \includegraphics[width = \linewidth]{./images/limeg2.png} 
+\end{center}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} Find the limit.
+\[\lim_{(x,y) \to (0,0)} \frac{x y^2 }{x^2 + y^4}\]
+Let's approach along any nonvertical line through the origin. Then $y = mx$, where $m$ is the slope, then
+\[f(x,y) = f(x, mx) = \frac{x(mx)^2}{x^2 + (mx)^4} = \frac{m^2 x^3}{x^2 + m^4 x^4} = \frac{m^2 x}{1 + m^4 x^2}\]
+So $\quad f(x,y) \to 0 \quad \text{as} \quad (x,y) \to (0,0)$ along $y = mx$.\\
+Thus $f$ has the same limiting value along \textit{every nonvertical line} through the origin. But that does not show that the answer is 0, if we now let $(x,y) \to (0,0)$ along the parabola $x = y^2$, we have 
+\[f(x,y) = f(y^2, y) = \frac{y^2 \dot y^2 }{(y^2 )^2 + y^4} = \frac{y^4}{2y^4} = \frac{1 }{2 }\]
+Hence, the limit \textbf{does not exist}.
+
+\begin{mdframed}
+ \textbf{What limits that do exist then?} 
+
+ The limit of a \textbf{sum} the sum of the limits, so does a \textbf{product}. These equations are true.
+ \begin{align*}
+   \lim_{(x,y) \to (a,b)} x = a & \quad & \lim_{(x,y) \to (a,b)} y = b & \quad & \lim_{(x,y) \to (a,b)} c = c 
+ \end{align*}
+ The Squeeze Theorem also holds.
+\end{mdframed}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} Find the limit.
+\[\lim_{(x,y) \to (0,0)}\frac{3 x^2 y }{x^2 + y^2 }\]
+$\square$ As the previous example, we see that the limit along any line through the origin is 0. Plus, the limits along the parabolas $y = x^2$ and $x = y^2$ are also 0, so we suspect the limit exist and equal to 0.\\
+$\square$ Let $\varepsilon > 0$. We want to find $\delta > 0 $ such that 
+\[\text{if } \quad 0 < \sqrt{x^2 + y^2 } < \delta \quad \text{ then } \quad \abs{ \frac{3x^2 y }{x^2 + y^2 } - 0  } < \varepsilon \]
+That is, 
+\[\text{if } \quad 0 < \sqrt{x^2 + y^2 } < \delta \quad   \text{ then } \quad  \frac{3x^2 |y| }{x^2 + y^2   } < \varepsilon \]
+Since $ x^2 \le x^2 + y^2 $, so $x^2 / (x^2 + y^2 ) \le 1$ and therefore 
+\[\frac{3 x^2 |y| }{x^2 + y^2 } \le 3 |y| = 3 \sqrt{y^2 } \le 3 \sqrt{x^2 + y^2 } < 3 \delta \]
+Thus we choose $\delta = \varepsilon / 3 $ and let $0 < \sqrt{x^2 + y^2 } < \delta $, then 
+\[\frac{3 x^2 |y| }{x^2 + y^2 } \le 3 \sqrt{x^2 + y^2 } < 3 \delta = 3 \left(\frac{\varepsilon }{3 }\right) = \varepsilon   \]
+Hence, by the \textbf{Definition: Limit}, 
+\[\lim_{(x,y) \to (0,0)} \frac{3 x^2 y }{x^2 + y^2 } = 0 \]
+
+\subsection*{{\fontfamily{lmss}\selectfont \underline{Continuity}}}
+Limits of \textit{continuous} functions is easy evaluated by direct substitution.
+\begin{Def}[Continuous]
+  A function $f$ is \textbf{continuous at $(a,b)$} if 
+  \[\lim_{(x,y) \to (a,b)} f(x,y) = f(a,b)\]
+  We say $f$ is \textbf{continuous on $D$} if $f$ is continuous at \textit{every} point $(a,b)$ in $D$.
+\end{Def}
 \end{document}

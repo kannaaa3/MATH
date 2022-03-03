@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1646313027 "14.tex" "14.pdf" "14" 1646313027
+["pdflatex"] 1646322028 "14.tex" "14.pdf" "14" 1646322029
   "/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1640600964 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1640600964 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1640600964 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -228,8 +228,8 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1640600964 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1642420675 4243317 6cd4c1d3b72728bfa7db8ef2e14c0430 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1642420657 2920111 7fdadf516a07fc39c4737263e57f3359 ""
-  "14.aux" 1646313027 465 0aada8ed9c75454a2910062686dbe3e8 "pdflatex"
-  "14.tex" 1646313026 9785 ae69ee3d0b966acbaab8654935fbfde3 ""
+  "14.aux" 1646322029 552 74aff50012c6b8cd3728f27c639d4801 "pdflatex"
+  "14.tex" 1646322027 13377 e6d63a136cbe27c238d12d3831e83419 ""
   "images/blender.png" 1646299379 598267 5ed06adb067e252ad509b8c25434f228 ""
   "images/cmpFG.png" 1646302686 99772 e2f0043ec0d48e0635a64baac245fe16 ""
   "images/contour.png" 1646300637 221001 507804553ee441f66e6b3cbe16a42547 ""
@@ -239,8 +239,9 @@
   "images/eg6.png" 1646298864 21474 00e7d1450176c278bf3a48e2c0a2c845 ""
   "images/graph.png" 1646298376 25850 ffc10dc6dcec15e7fd2a0cd95740abb2 ""
   "images/levelcurves.png" 1646301205 636014 66bfb76ccb4dd1a95a9aaf7afe0a12a2 ""
-  "images/lim3g2.png" 1646312794 12949 39be57196b472bf774fdefd0fc7166ca ""
-  "images/limeg1.png" 1646311091 5964 bc387c86dc13f1e392e719921d598915 ""
+  "images/lim3g2.png" 1646313649 11925 14bb0147bd55011a47474544ed7bb8fc ""
+  "images/limeg1.png" 1646313755 7779 bc92a999ca17bb21dd053e1f76d5a4a4 ""
+  "images/limeg2.png" 1646318452 219473 7e0924fdcccf8fa98647b0698f94b76b ""
   "images/limit.png" 1646304405 61539 8f2881761894a1ca8095d48a9ffebf26 ""
   "images/temperature.png" 1646300759 502784 f7b801a52c512903e1126a48c68133f5 ""
   (generated)

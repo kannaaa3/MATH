@@ -1,4 +1,4 @@
-PWD /home/kannaaa3/Documents/Latex/Calculus/14
+PWD /home/kannaaa3/Documents/Latex/MATH/Calculus/14
 INPUT /usr/share/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
 INPUT 14.tex
@@ -1148,6 +1148,11 @@ INPUT ./images/lim3g2.png
 INPUT ./images/lim3g2.png
 INPUT ./images/lim3g2.png
 INPUT ./images/lim3g2.png
+INPUT ./images/limeg2.png
+INPUT ./images/limeg2.png
+INPUT ./images/limeg2.png
+INPUT ./images/limeg2.png
+INPUT ./images/limeg2.png
 INPUT 14.aux
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
