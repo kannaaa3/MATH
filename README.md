@@ -1,2 +1,2 @@
-# UET
+# MATH
 In case I reboot.
