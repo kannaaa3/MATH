@@ -163,11 +163,11 @@ It's hard to visualize $f(x,y,z)$ by its graph (four-dimensional space). We exam
 \end{minipage}
 
 \begin{Def}[]
-  A \textbf{function of n variables} is a rule that assigns a number $z = f(x_1, x_2 , \dots , x_n)$ to an $n$-tuple $(x_1, x_2, \dots, x_n)$. The set of all $n$-tuples is $\mathbb{R}^n$. We can look at it as a function of
+  A \textbf{function of n variables} is a rule that assigns a number $z = f(x_1, x_2 , \cdots , x_n)$ to an $n$-tuple $(x_1, x_2, \cdots, x_n)$. The set of all $n$-tuples is $\mathbb{R}^n$. We can look at it as a function of
   \begin{itemize}
-    \item $n$ real variables $x_1, x_2, \dots, x_n$.
-    \item A single point $(x_1, x_2, \dots, x_n)$.
-    \item A single vector $\textbf{x} = \langle x_1, x_2, \dots, x_n \rangle$
+    \item $n$ real variables $x_1, x_2, \cdots, x_n$.
+    \item A single point $(x_1, x_2, \cdots, x_n)$.
+    \item A single vector $\textbf{x} = \langle x_1, x_2, \cdots, x_n \rangle$
   \end{itemize}
 \end{Def}
 \pagebreak
@@ -258,7 +258,7 @@ Let's approach along any nonvertical line through the origin. Then $y = mx$, whe
 \[f(x,y) = f(x, mx) = \frac{x(mx)^2}{x^2 + (mx)^4} = \frac{m^2 x^3}{x^2 + m^4 x^4} = \frac{m^2 x}{1 + m^4 x^2}\]
 So $\quad f(x,y) \to 0 \quad \text{as} \quad (x,y) \to (0,0)$ along $y = mx$.\\
 Thus $f$ has the same limiting value along \textit{every nonvertical line} through the origin. But that does not show that the answer is 0, if we now let $(x,y) \to (0,0)$ along the parabola $x = y^2$, we have 
-\[f(x,y) = f(y^2, y) = \frac{y^2 \dot y^2 }{(y^2 )^2 + y^4} = \frac{y^4}{2y^4} = \frac{1 }{2 }\]
+\[f(x,y) = f(y^2, y) = \frac{y^2 \cdot y^2 }{(y^2 )^2 + y^4} = \frac{y^4}{2y^4} = \frac{1 }{2 }\]
 Hence, the limit \textbf{does not exist}.
 
 \begin{mdframed}
@@ -286,9 +286,58 @@ Hence, by the \textbf{Definition: Limit},
 
 \subsection*{{\fontfamily{lmss}\selectfont \underline{Continuity}}}
 Limits of \textit{continuous} functions is easy evaluated by direct substitution.
-\begin{Def}[Continuous]
+\begin{Def}[Continuity]
   A function $f$ is \textbf{continuous at $(a,b)$} if 
   \[\lim_{(x,y) \to (a,b)} f(x,y) = f(a,b)\]
   We say $f$ is \textbf{continuous on $D$} if $f$ is continuous at \textit{every} point $(a,b)$ in $D$.
 \end{Def}
+A \textbf{polynomial function of 2 variables} is a sum of terms $c x^m y^n$, and a \textbf{rational function} is a ratio of polynomials. For instance,
+\[f(x,y) = x^4 + 5x^3 y^2 + 6xy^4 - 7y + 6  \]
+is a polynomial, whereas 
+\[g(x,y) = \frac{2xy + 1 }{x^2 + y^2 }\]
+is a  rational function. A rational function is $continuous$ on its domain because it's a quotient of continuous functions (polynomial).\\
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} 
+\[ \lim_{(x,y) \to (1,2)} (x^2 y^3 - x^3 y^2 + 3x + 2y) = 1^2 \cdot 2^3  - 1^3 \cdot 2^2 + 3 \cdot 1 + 2 \cdot 2 = 11 \]
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} Let 
+\[ g(x,y) = 
+\begin{cases}
+  \frac{x^2 -y^2 }{x^2 + y^2 } \quad \text{if} \quad (x,y) \ne (0,0) \\
+  0 \quad \quad \text{ if } \quad (x,y) = (0,0)
+\end{cases}\]
+Here $g$ is defined at $(0,0)$ but still discontinuous because $\lim_{(x,y) \to  (0,0)} g(x,y)$ does not exist.
+\pagebreak 
+\begin{mdframed}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{Composition.}}} If $f(x,y)$ is continuous, and so is $g(x)$, then the composite function $h = g \circ f$, defined by $h(x,y) = g(f(x,y))$ is continuous.
+  
+\end{mdframed}
+
+\begin{minipage}[]{0.34\linewidth}
+  \includegraphics[width = 4.6 cm]{./images/arctanyx.png}
+  
+\end{minipage}
+\begin{minipage}[]{0.57\linewidth}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} Where is the function $h(x,y) = \arctan(y/x)$ continuous?
+
+The function $f(x,y) = y/x$ is a rational function, and therefore continuous except on the line $x = 0$. The function $g(t) = \arctan{t}$ is continuous everywhere. So the composite function $g(f(x,y))$ is continuous except where $x = 0$.
+  
+\end{minipage}
+
+\subsection*{{\fontfamily{lmss}\selectfont \underline{Functions of Three or More Variables}}}
+It's just the same. For every number $\varepsilon > 0$, there is a corresponding number $\delta > 0$ such that 
+\begin{center}
+  if $\quad (x,y,z) $ is in the domain of $f\quad $ and $\quad 0 < \sqrt{(x- a)^2 + (y - b)^2 + (z-c)^2 } < \delta $ \\
+  then $\quad \abs{f(x,y,z) - L} < \varepsilon $
+\end{center}
+
+The function $f$ is \textbf{continuous} at $(a,b,c)$ if 
+\[\lim_{(x,y,z) \to (a,b,c)} f(x,y,z) = f(a,b,c )\]
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{EXAMPLE.}}} The function \[f(x,y,z) = \frac{1 }{x^2 + y^2 + z^2 - 1 }\] is a rational function, so it's continuous at every point of $\mathbb{R}^3$ except where $x^2 + y^2 + z^2 = 1 $.  In other words, it's discontinuous on the sphere with center the origin and radius 1.
+
+\begin{Def}[Limit in $\mathbb{R}^n$]
+  If $\lim_{x \to a } f (\textbf{x}) = L$, then it means that for every number $\varepsilon > 0 $ there is a corresponding $\delta > 0$ such that 
+  \[\text{if } \quad x \in D \quad \text{and } \quad 0 < \abs{\textbf{x} - \textbf{a}} < \delta \quad \text{then } \quad \abs{f(\textbf{x}) - L} < \varepsilon \]
+\end{Def}
+
+
+
 \end{document}
