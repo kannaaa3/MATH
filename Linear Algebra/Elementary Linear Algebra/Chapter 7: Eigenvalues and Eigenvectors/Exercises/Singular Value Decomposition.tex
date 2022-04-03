@@ -1,0 +1,1030 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, systeme, mathtools, lmodern, float, graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage[scale=.95,type1]{cabin}
+\usepackage[framemethod=tikz]{mdframed}
+
+\usepackage[legalpaper,margin=0.2in]{geometry}
+
+\setlength{\parindent}{10pt}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.2}
+
+\title{Chapter 7: Eigenvalues and Eigenvectors}
+\date{}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand\y{\cellcolor{blue!10}}
+
+\usepackage{tabularray}
+\SetTblrInner{colsep=5pt,rowsep=1pt}
+
+\newcommand\x{\times}
+\newcommand\xor{\oplus}
+
+\makeatletter
+\newcommand{\dashover}[2][\mathop]{#1{\mathpalette\df@over{{\dashfill}{#2}}}}
+\newcommand{\fillover}[2][\mathop]{#1{\mathpalette\df@over{{\solidfill}{#2}}}}
+\newcommand{\df@over}[2]{\df@@over#1#2}
+\newcommand\df@@over[3]{%
+  \vbox{
+    \offinterlineskip
+    \ialign{##\cr
+      #2{#1}\cr
+      \noalign{\kern1pt}
+      $\m@th#1#3$\cr
+    }
+  }%
+}
+\newcommand{\dashfill}[1]{%
+  \kern-.5pt
+  \xleaders\hbox{\kern.5pt\vrule height.4pt width \dash@width{#1}\kern.5pt}\hfill
+  \kern-.5pt
+}
+\newcommand{\dash@width}[1]{%
+  \ifx#1\displaystyle
+    2pt
+  \else
+    \ifx#1\textstyle
+      1.5pt
+    \else
+      \ifx#1\scriptstyle
+        1.25pt
+      \else
+        \ifx#1\scriptscriptstyle
+          1pt
+        \fi
+      \fi
+    \fi
+  \fi
+}
+\newcommand{\solidfill}[1]{\leaders\hrule\hfill}
+\makeatother
+
+\newcommand\R{\mathbb{R}}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\newcommand*{\Value}{\frac{1}{2}x^2}%
+
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+
+\newcounter{Ques}[section]
+\newenvironment{Ques}[1][]{%
+    \stepcounter{Ques}
+  \ifstrempty{#1}%
+  {\mdfsetup{%
+    frametitle={%
+      \tikz[baseline=(current bounding box.east),outer sep=0pt]
+      \node[line width=1pt,anchor=east,rectangle,draw=blue!20,fill=white]
+    {\strut \color{blue5}{\textit{QUESTION}}~\theQues};}}
+  }%
+  {\mdfsetup{%
+    frametitle={%
+      \tikz[baseline=(current bounding box.east),outer sep=0pt]
+      \node[line width=1pt,anchor=east,rectangle,draw=blue!20,fill=white]
+    {\strut \color{black}{\textit{ANSWER}}~:~\color{blue4}{#1}};}}%
+  }%
+  \mdfsetup{innertopmargin=2pt,linecolor=blue!20,%
+            linewidth=1pt,topline=true,%
+            frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+  \begin{mdframed}[]\relax%
+  }{\end{mdframed}}
+
+
+\begin{document}
+    \begin{Ques}
+        Determine whether the matrix is symmetric.
+    \end{Ques}
+    \begin{minipage}{0.20\linewidth}
+        \[A = \begin{bmatrix}[rr]
+            6 & -2 \\
+            -2 & 1 
+        \end{bmatrix} \]
+        
+    \end{minipage}
+    \begin{minipage}{0.20\linewidth}
+        \[A = \begin{bmatrix}[rr]
+            1 & 3 \\
+            2 & 4 
+        \end{bmatrix} \]
+    \end{minipage}
+    \begin{minipage}{0.20\linewidth}
+        \[A = \begin{bmatrix}[rrr]
+            2 & -2 &  1 \\
+            -2 & 3 & 4 \\
+            0 & 4 & 1 
+        \end{bmatrix} \]
+
+    \end{minipage}
+    \begin{minipage}{0.20\linewidth}
+        \[A = \begin{bmatrix}[rrr]
+            -5 & 3 & 4 \\
+            3 & 7 & -2 \\
+            4 & -2 & 3
+        \end{bmatrix} \]
+
+    \end{minipage}
+
+    \begin{minipage}{0.20\linewidth}
+        (a) Yes.
+    \end{minipage}
+    \begin{minipage}{0.20\linewidth}
+        (b) No.
+    \end{minipage}
+    \begin{minipage}{0.20\linewidth}
+        (c) No.
+    \end{minipage}
+    \begin{minipage}{0.20\linewidth}
+        (d) Yes.
+    \end{minipage}
+
+
+    \begin{Ques}
+             Find the eigenvalues with their eigenvectors and the dimensions of the corresponding eigenspaces.
+
+    \end{Ques}
+
+    \begin{minipage}{0.48\linewidth}
+    (a) $A = \begin{bmatrix}[rr]
+        1 & 3 \\
+        3 & 1
+    \end{bmatrix} $
+   
+    $            | \lambda I - A| = \begin{vmatrix}
+                \lambda  - 1 & -3 \\
+                -3 & \lambda  - 1
+            \end{vmatrix} = ( \lambda  - 4 )( \lambda  + 2 )$
+    
+    $\bullet$ For $ \lambda _1 = 4$: $ 4I - A = \begin{bmatrix}[rr]
+        3 & -3 \\
+        -3 & 3
+    \end{bmatrix} \rightarrow \begin{bmatrix}[rr]
+        1 & -1 \\
+        0 & 0 
+    \end{bmatrix} $
+
+    Let $s = x_2 \implies \textbf{x} = \begin{bmatrix}[r]
+        x_1 \\
+        x_2
+    \end{bmatrix} = s \begin{bmatrix}[c]
+        1 \\ 1
+    \end{bmatrix}$
+
+    $\implies \textbf{u}_1 = \begin{bmatrix}[r]
+        1 \\
+        1 
+    \end{bmatrix} \quad \text{(dim = 1)}$
+
+
+    $\bullet$ For $ \lambda _2 = -2$: $-2I - A = \begin{bmatrix}[rr]
+        -3 & -3 \\
+        -3 & -3 
+    \end{bmatrix} \to \begin{bmatrix}[rr]
+        1 & 1 \\
+        0 & 0 
+    \end{bmatrix} $
+
+    Let $s = x_2 \implies \textbf{x} = \begin{bmatrix}[c]
+        x_1 \\ x_2 
+    \end{bmatrix} = \begin{bmatrix}[r]
+        -s \\ s 
+    \end{bmatrix} = s \begin{bmatrix}[r]
+        -1 \\ 1 
+    \end{bmatrix} $
+
+    $\implies \textbf{u}_2 = \begin{bmatrix}[r]
+        -1 \\
+        1 
+    \end{bmatrix} \quad \text{(dim = 1)}$
+
+    \end{minipage} \hfill
+    \begin{minipage}{0.48\linewidth}
+        (b) $A = \begin{bmatrix}[rr]
+            0 & 2 \\
+            2 & 0 
+        \end{bmatrix} $
+
+    $| \lambda I - A| = \begin{vmatrix}
+        \lambda  & -2 \\
+        -2 & \lambda  
+    \end{vmatrix}$
+
+    Let $\lambda = \ddfrac{-2(\lambda' - 1)}{-3} $, the characteristic polynomial has been solved for $\lambda'$ in $(a)$.
+    
+    $\bullet$ For $ \lambda _1 = \ddfrac{2(\lambda_1' - 1)}{3} = 2, \quad \textbf{u}_1 = \begin{bmatrix}[r]
+        1 \\
+        1 
+    \end{bmatrix} \quad \text{(dim = 1)}$
+
+
+    $\bullet$ For $ \lambda _2 = \ddfrac{2(\lambda_2' - 1)}{3} = -2, \quad \textbf{u}_2 = \begin{bmatrix}[r]
+        -1 \\
+        1 
+    \end{bmatrix} \quad \text{(dim = 1)}$
+
+
+    \end{minipage}
+
+    {\color{blue9} \rule{20cm}{0.3mm}}
+
+    
+
+%############################################################################################################
+
+    \begin{minipage}[t]{0.48\linewidth}
+        (c) $A = \begin{bmatrix}[rrr]
+            2 & 1 & 1 \\
+            1 & 2 & 1 \\
+            1 & 1 & 2 
+        \end{bmatrix} $
+
+        $| \lambda I - A| = \begin{vmatrix}
+            \lambda  - 2 & -1 & -1 \\
+            -1 & \lambda  - 2 & -1 \\
+            -1 & -1 & \lambda  - 2
+        \end{vmatrix} $
+
+        Let $ \lambda ' = \lambda  - 2$. The determinant become the one in $(f)$, we already solved for $ \lambda '$.
+        
+        $\bullet$ For $\lambda_1 = \lambda_1' + 2 = 1, \quad \begin{cases}{}
+            \textbf{u}_1 = (-1,1,0) \\
+            \textbf{u}_2 = (-1,0,1)
+        \end{cases} \quad \text{(dim = 2)}$
+
+        $\bullet$ For $\lambda_2 = \lambda_2' + 2 = 4, \quad \textbf{u}_3 = (1,1,1) \quad \text{(dim = 1)}$
+
+    \end{minipage} \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        (d) $A = \begin{bmatrix}[rrr]
+            0 & 2 & 2 \\
+            2 & 0 & 2 \\
+            2 & 2 & 0 
+        \end{bmatrix} $
+
+        $| \lambda I - A| = \begin{vmatrix}
+            \lambda  & -2 & -2 \\
+            -2 & \lambda  & -2 \\
+            -2 & -2 & \lambda  
+        \end{vmatrix} = ( \lambda  + 2 )^2( \lambda  - 4 )$
+
+        $\bullet$ For $ \lambda _1 = -2$: $2I - A = \begin{bmatrix}[rrr]
+            -2 & -2 & -2 \\
+            -2 & -2 & -2 \\
+            -2 & -2 & -2
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            1 & 1 & 1 \\
+            0 & 0 & 0 \\
+            0 & 0 & 0
+        \end{bmatrix}  $
+
+        Let $s = x_2$ and $t = x_3$: $ \textbf{x} = s \begin{bmatrix}[r]
+            -1 \\
+            1 \\ 0 
+        \end{bmatrix} + t \begin{bmatrix}[r]
+            -1 \\
+            0 \\
+            1 
+        \end{bmatrix} $
+
+        $\implies \begin{cases}{}
+            \textbf{u}_1 = (-1, 1, 0) \\
+            \textbf{u}_2 = (-1, 0, 1)
+        \end{cases} \quad \text{(dim = 2)}$
+
+
+    $\bullet$ For $ \lambda _2 = 4: 4I - A = \begin{bmatrix}[rrr]
+        4 & -2 & -2 \\
+        -2 & 4 & -2 \\
+        -2 & -2 & 4 
+    \end{bmatrix} \to \begin{bmatrix}[rrr]
+        1 & 0 & -1 \\
+        0 & 1 & -1 \\
+        0 & 0 & 0 
+    \end{bmatrix} $
+
+    Let $s = x_3: \textbf{x} = s \begin{bmatrix}[r]
+        1 \\ 1 \\ 1 
+    \end{bmatrix}$
+
+    $\implies \textbf{u}_3 = (1,1,1) \quad \text{(dim = 1)}$
+
+
+    \end{minipage}
+
+    \begin{minipage}[t]{0.48\linewidth}
+        (e) $A = \begin{bmatrix}[rrr]
+            0 & 4 & 4 \\
+            4 & 2 & 0 \\
+            4 & 0 & -2 
+        \end{bmatrix}$
+
+        $| \lambda I - A| = \begin{vmatrix}
+            \lambda  & -4 & -4 \\
+            -4 & \lambda  -2 & 0 \\
+            -4 & 0 & \lambda  + 2 
+        \end{vmatrix} = \lambda ( \lambda  - 6 )( \lambda  + 6 )$
+
+        $\bullet$  For $ \lambda _1 = 0 : 0I - A = \begin{bmatrix}[rrr]
+            0 & -4 & - 4 \\
+            -4 & -2 & 0 \\
+            -4 & 0 & 2 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            2 & 0 & -1 \\ 
+            0 & 1 & 1 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_3: \textbf{x} = s \begin{bmatrix}[r]
+            1/2 \\
+            -1 \\
+            1
+        \end{bmatrix} \implies \textbf{w} _1 = ( \ddfrac{1}{2} , -1, 1 ) \quad \text{(dim = 1)}$
+
+        $\bullet$ For $ \lambda _2 = 6: 6I - A = \begin{bmatrix}[rrr]
+            6 & -4 & - 4 \\
+            -4 & 4 & 0 \\
+            -4 & 0 & 8 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            1 & 0 & -2 \\
+            0 & 1 & -2 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_3: \textbf{x} = s \begin{bmatrix}[r]
+            2 \\
+            2 \\
+            1 
+        \end{bmatrix} \implies \textbf{w} _2 = (2, 2, 1) \quad \text{(dim = 1)}$
+        
+        $\bullet$ For $ \lambda _3 = -6: -6I - A = \begin{bmatrix}[rrr]
+            -6 & -4 & -4 \\
+            -4 & -8 & 0 \\
+            -4 & 0 & -4 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            1 & 0 & 1 \\
+            0 & 2 & -1 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_3: \textbf{x} = s \begin{bmatrix}[r]
+            -1 \\
+            1/2 \\
+            1 
+        \end{bmatrix} \implies \textbf{w} _3 = (-1, \ddfrac{1}{2} , 1) \quad \text{(dim = 1)}$
+
+
+
+    \end{minipage} \hfill 
+    \begin{minipage}[t]{0.48\linewidth}
+        (f) $A_{(f)} = \begin{bmatrix}[rrr]
+            0 & 1 & 1 \\
+            1 & 0 & 1 \\
+            1 & 1 & 0 
+        \end{bmatrix} = \ddfrac{1}{2} A_{(d)}  \implies  A_{(d)} \textbf{x} =2 \lambda  x$
+
+        This implies that the eigenvalues of $A_{(f)}$ are equal to half of the ones from $(d)$ with
+        the corresponding eigenvectors.
+
+        $\bullet \lambda _1 = \frac{1}{2} (-2) = -1, \quad \begin{cases}{}
+            \textbf{u}_1 = (-1,1,0) \\
+            \textbf{u}_2 = (-1, 0, 1)
+        \end{cases} \quad \text{(dim = 2)}$
+
+        $\bullet \lambda _2 = \frac{1}{2}(4) = 2,\quad \textbf{u}_3 = (1,1,1) \quad \text{(dim = 1)}$
+
+    \end{minipage}
+
+    \begin{minipage}[t]{0.48\linewidth}
+        (g) $A = \begin{bmatrix}[rrr]
+            2 & -1 & -1 \\
+            -1 & 2 &  -1\\
+            -1 & -1 & 2
+        \end{bmatrix} $
+        
+        $| \lambda I - A| = \begin{vmatrix}
+            \lambda  - 2 & 1 & 1 \\
+            1 & \lambda  - 2 & 1 \\
+            1 & 1 & \lambda  - 2 
+        \end{vmatrix} $
+
+        Let $\lambda' = 2 - \lambda$, then we already solved for $\lambda'$ in $(f)$.
+
+        $\bullet$ For $ \lambda _1 = 2 - \lambda_1' = 3, \quad 
+         \begin{cases}{}
+            \textbf{u}_1  = (-1, 1, 0) \\
+            \textbf{u} _2 = (-1, 0, 1)
+        \end{cases} \quad \text{(dim = 2)} $
+
+        $\bullet$ For $ \lambda _2 = 2 - \lambda_2' = 0, \quad \textbf{u} _3 = (1,1,1) \quad \text{(dim = 1)}$
+
+
+
+    \end{minipage} \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        (h) $A = \begin{bmatrix}[rrr]
+            3 & 0 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 1 
+        \end{bmatrix}$
+
+        $\bullet$ For $ \lambda _1 = 3$: the dimension of the eigenspace of $ \lambda _1$ is 1.
+
+        $3I - A = \begin{bmatrix}[rrr]
+            0 & 0 & 0 \\
+            0 & 2 & 0 \\
+            0 & 0 & 2 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            0& 1 & 0 \\
+            0 & 0 & 1 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_1 : \textbf{x} = s \begin{bmatrix}[r]
+            1 \\
+            0 \\
+            0 
+        \end{bmatrix} \implies \textbf{u}_1 = (1,0,0)$
+
+        $\bullet$ For $ \lambda _2 = 1$: since $ \lambda _2$ has a multiplicity of $2$, the corresponding eigenspace has dimesion $2$.
+
+        $I - A = \begin{bmatrix}[rrr]
+            -2 & 0 & 0 \\
+            0 & 0 & 0 \\
+            0 & 0 & 0 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            1 & 0 & 0 \\
+             0  &0 &0 \\ 0& 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_2$ and $t = x_3 : \textbf{x} = s \begin{bmatrix}[r]
+            0\\
+            1 \\
+            0 
+        \end{bmatrix} + t \begin{bmatrix}[r]
+            0 \\
+            0 \\
+            1 
+        \end{bmatrix} \implies \begin{cases}{}
+            \textbf{u}_2 = (0,1,0) \\
+            \textbf{u}_3 = (0,0,1)
+        \end{cases}$
+    \end{minipage}
+
+
+    \pagebreak
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{Ques}
+            Determine whether the matrix is \textbf{orthogonal}.
+
+    \end{Ques}
+
+
+    \begin{minipage}{0.45\linewidth}
+        \[ \begin{bmatrix}[rr]
+            \ddfrac{\sqrt{2}}{2}  & \ddfrac{\sqrt{2}}{2} \\
+            -\ddfrac{\sqrt{2}}{2} & \ddfrac{\sqrt{2}}{2} 
+        \end{bmatrix} \]
+        (a) Yes.
+
+        The column vectors of $A$ form an orthonormal basis.
+    \end{minipage}
+    \begin{minipage}{0.45\linewidth}
+        \[ \begin{bmatrix}[rr]
+            2/3 & -2/3 \\
+            2/3 & 1/3 
+        \end{bmatrix} \]
+        (b) No.
+        \[ \norm{a_1} = \ddfrac{2\sqrt{2}}{3} \ne 1\]
+    
+    \end{minipage}
+
+    \begin{minipage}{0.45\linewidth}
+        \[A = \begin{bmatrix}[rrr]
+            -4 & 0 & 3 \\
+            0 & 1 & 0 \\
+            3 & 0 & 4 
+        \end{bmatrix} \]
+        (c) No.
+        \[\norm{a_1} = 5 \ne 0 \]
+    \end{minipage}
+    \begin{minipage}{0.45\linewidth}
+        \[A = \begin{bmatrix}[rrr]
+            -4/5 & 0 & 3/5 \\
+            0 & 1 & 0 \\
+            3/5 & 0 & 4/5 
+        \end{bmatrix} \]
+        (d) Yes.
+
+        The column vectors of $A$ form an orthonormal basis.
+    \end{minipage}
+
+    {\color{blue9} \rule{10cm}{0.3mm}} 
+
+    \begin{Ques}
+             Find an orthogonal matrix $P$ that diagonalizes $A$ and $P^TAP$.
+    \end{Ques}
+
+
+    \begin{minipage}{0.499\linewidth}
+        (a) $A = \begin{bmatrix}
+            1 & 1 \\
+            1 & 1 
+        \end{bmatrix} $
+
+        $| \lambda  I - A | = \begin{vmatrix}
+            \lambda  - 1 & - 1 \\
+            -1 & \lambda  - 1 
+        \end{vmatrix} = ( \lambda  - 2 ) \lambda  $
+
+        $\bullet$ For $ \lambda _1 = 2$: $2I - A = \begin{bmatrix}[rr]
+            1 & -1 \\
+            -1 & 1 
+        \end{bmatrix} \to \begin{bmatrix}[rr]
+            1 & -1 \\
+            0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_2 \implies \textbf{x} = \begin{bmatrix}[r]
+            s \\
+            s
+        \end{bmatrix}  = s \begin{bmatrix}[r]
+            1 \\
+            1
+        \end{bmatrix} \implies \textbf{u}_1 = \left( \ddfrac{1}{\sqrt{2}} ,
+        \ddfrac{1}{\sqrt{2}} \right)$
+
+        $\bullet$ For $ \lambda _2 = 0$: $0I - A = \begin{bmatrix}[rr]
+            -1 & -1\\
+            -1 & -1 
+        \end{bmatrix} \to \begin{bmatrix}[rr]
+            1 & 1 \\
+            0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_2 \implies \textbf{x} = \begin{bmatrix}[r]
+            -s \\
+            s
+        \end{bmatrix} = s \begin{bmatrix}[r]
+            -1 \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_2 = \left( - \ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}}  \right)$
+        \begin{equation*}
+            \begin{split}
+                P &= \begin{bmatrix}[rr]
+            \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \\
+            \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+        \end{bmatrix} \\
+                    P^TAP &= \begin{bmatrix}[rr]
+                        2 & 0 \\
+                        0 & 0
+                    \end{bmatrix} 
+            \end{split}
+        \end{equation*}
+    \end{minipage}
+    \begin{minipage}{0.45\linewidth}
+        (b) $A = \begin{bmatrix}[rr]
+            4 & 2 \\
+            2 & 4 
+        \end{bmatrix} $
+
+        $| \lambda I - A | = \begin{vmatrix}
+            \lambda  - 4 & 2 \\
+            2 & \lambda  - 4 
+        \end{vmatrix} =  ( \lambda  - 6 )( \lambda  - 2 )$
+
+        $\bullet$ For $ \lambda _1 = 6$: $6I - A = \begin{bmatrix}[rr]
+            2 & 2 \\
+            2 & 2 
+        \end{bmatrix} \to \begin{bmatrix}[rr]
+            1 & 1 \\
+            0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_2: \textbf{x} = s \begin{bmatrix}[r]
+            -1 \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_1 = \left( - \ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}}  \right) $
+
+        $\bullet$ For $ \lambda _2 = 2$: $2I - A = \begin{bmatrix}[rr]
+            -2 & 2 \\
+            2 & -2 
+        \end{bmatrix} \to \begin{bmatrix}[rr]
+            1 & -1 \\
+            0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_2: \textbf{x} = s \begin{bmatrix}[r]
+            1 \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_2 = \left( \ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}}  \right) $
+        \begin{equation*}
+            \begin{split}
+                P &= \begin{bmatrix}[rr]
+                    -\ddfrac{1}{\sqrt{2}}  & \ddfrac{1}{\sqrt{2}}  \\
+                    \ddfrac{1}{\sqrt{2}}  & \ddfrac{1}{\sqrt{2}}  
+                \end{bmatrix} \\
+                    P^TAP& = \begin{bmatrix}[rr]
+                    6 & 0 \\
+                    0 & 2
+                \end{bmatrix} 
+            \end{split}
+        \end{equation*}
+    \end{minipage}
+
+    {\color{blue9} \rule{20cm}{0.3mm}}
+
+    
+
+    \begin{minipage}{0.54\linewidth}
+        (c) $A = \begin{bmatrix}[ccc]
+            0 & 3 & 0 \\
+            3 & 0 & 4 \\
+            0 & 4 & 0 
+        \end{bmatrix} $
+
+        $| \lambda I - A| = \begin{vmatrix}
+            \lambda  & -3 & 0 \\
+            -3 & \lambda  & -4 \\
+            0 & -4 & \lambda  
+        \end{vmatrix} = \lambda ( \lambda  - 5 )( \lambda  + 5 )$
+
+        $\bullet$ For $ \lambda _1 = 0$: $0I - A = \begin{bmatrix}[rrr]
+            0 & -3 & 0 \\
+            -3 & 0 & -4 \\
+            0 & -4 & 0 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            3 & 0 & 4 \\
+            0 & 1 & 0 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_3: \textbf{x} = \begin{bmatrix}[r]
+            -\frac{4}{3}s \\
+            0 \\
+            s 
+        \end{bmatrix} = s \begin{bmatrix}[r]
+            - \frac{4}{3} \\
+            0 \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_1 = \left( - \frac{4}{5}, 0, \frac{3}{5} \right)$
+
+        $\bullet$ For $ \lambda _2 = 5$: $5I - A = \begin{bmatrix}[rrr]
+            5 & -3 & 0 \\
+            -3 & 5 & -4\\
+            0 & -4 & 5 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            4 & 0 & -3 \\
+            0 & 4 & -5 \\
+            0 & 0 & 0 
+        \end{bmatrix}$
+        
+        Let $s = x_3 : \textbf{x} = \begin{bmatrix}[r]
+            \frac{3}{4}s \\
+            \frac{5}{4}s \\
+            s
+        \end{bmatrix} =s \begin{bmatrix}[r]
+            \frac{3}{4} \\
+            \frac{5}{4} \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_2 = \left( \ddfrac{3}{5\sqrt{2}} , \ddfrac{1}{\sqrt{2}} , \ddfrac{4}{5\sqrt{2}}  \right) $ 
+
+        $\bullet$ For $ \lambda _3 = -5$: $5I - A = \begin{bmatrix}[rrr]
+            -5 & -3 & 0 \\
+            -3 & -5 & -4 \\
+            0 & -4 & -5 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            4 & 0 & -3 \\
+            0 & 4 & 5 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_3 : \textbf{x} = \begin{bmatrix}[r]
+            \frac{3}{4}s \\
+            - \frac{5}{4}s \\
+            s 
+        \end{bmatrix} = s \begin{bmatrix}[r]
+            \frac{3}{4} \\
+            - \frac{5}{4}\\
+            1
+        \end{bmatrix} \implies \textbf{u}_3 = \left( \ddfrac{3}{5\sqrt{2}} , -\ddfrac{1}{\sqrt{2}} , \ddfrac{4}{5\sqrt{2}}  \right)$
+        \begin{equation*}
+            \begin{split}
+                P &= \begin{bmatrix}[rrr]
+            -\ddfrac{4}{5} & \ddfrac{3}{5\sqrt{2}} & \ddfrac{3}{5\sqrt{2}} \\
+            0 & \ddfrac{1}{\sqrt{2}} & - \ddfrac{1}{\sqrt{2}} \\
+            \ddfrac{3}{5} &  \ddfrac{4}{5\sqrt{2}} & \ddfrac{4}{5\sqrt{2}} 
+        \end{bmatrix} \\
+                    P^TAP &= \begin{bmatrix}[rrr]
+                        0 & 0 & 0 \\
+                        0 & 5 & 0 \\
+                        0 & 0 & -5 
+                    \end{bmatrix} 
+            \end{split}
+        \end{equation*}
+    \end{minipage} %$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    \begin{minipage}{0.43\linewidth}
+        (d) $A = \begin{bmatrix}[rrr]
+            1 & -1 & 2 \\
+            -1 & 1 & 2 \\
+            2 & 2 & 2 
+        \end{bmatrix} $
+
+        $| \lambda I - A| = \begin{vmatrix}
+            \lambda  - 1 & 1 & -2 \\
+            1 & \lambda  - 1 & -2 \\
+            -2 & -2 & \lambda  - 2 
+        \end{vmatrix} = ( \lambda  - 4 )( \lambda  - 2 )( \lambda  + 2 )$
+
+        $\bullet$ For $ \lambda _1 = 4$: $4I - A = \begin{bmatrix}[rrr]
+            3 & 1 & -2 \\
+            1 & 3 & -2 \\
+            -2 & -2 & 2 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            2 & 0 & -1 \\
+            0 & 2 & -1 \\
+            0 & 0 & 0 
+        \end{bmatrix}$
+
+        Let $s = x_3: \textbf{x} = s \begin{bmatrix}[r]
+            \frac{1}{2} \\
+            \frac{1}{2}  \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_1 = \left( \ddfrac{1}{\sqrt{6}} , \ddfrac{1}{\sqrt{6}} , \ddfrac{\sqrt{2}}{\sqrt{3}}  \right) $
+
+        $\bullet$ For $ \lambda _2 = 2$: $2I - A = \begin{bmatrix}[rrr]
+            1 & 1 & -2 \\
+            1 & 1 & -2 \\
+            -2 & -2 & 0 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            1 & 1 & 0 \\
+            0 & 0 & 2 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_2: \textbf{x} = s \begin{bmatrix}[r]
+            -1 \\
+            1 \\
+            0 
+        \end{bmatrix}  \implies \textbf{u}_2 = \left( - \ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}} , 0 \right) $
+
+        $\bullet$ For $ \lambda _3 = -2$: $-2I - A =  \begin{bmatrix}[rrr]
+            -3 & 1 & -2 \\
+            1 & -3 & -2 \\
+            -2 & -2 & -4 
+        \end{bmatrix} \to \begin{bmatrix}[rrr]
+            1 & 0 & 1 \\
+            0 & 1 & 1 \\
+            0 & 0 & 0 
+        \end{bmatrix} $
+
+        Let $s = x_3: \textbf{x} = s \begin{bmatrix}[r]
+            -1 \\
+            -1 \\
+            1 
+        \end{bmatrix} \implies \textbf{u}_3 = \left( - \ddfrac{1}{\sqrt{3}} , - \ddfrac{1}{\sqrt{3}} , \ddfrac{1}{\sqrt{3}}  \right)$
+        \begin{equation*}
+            \begin{split}
+                P &= \begin{bmatrix}[rrr]
+                    \ddfrac{1}{\sqrt{6}} & - \ddfrac{1}{\sqrt{2}}  & - \ddfrac{1}{\sqrt{3}} \\
+                    \ddfrac{1}{\sqrt{6}} & \ddfrac{1}{\sqrt{2}} & - \ddfrac{1}{\sqrt{2}} \\
+                    \ddfrac{\sqrt{2}}{\sqrt{3}}  & 0 & \ddfrac{1}{\sqrt{3}} 
+                \end{bmatrix}  \\
+                    P^TAP& = \begin{bmatrix}[rrr]
+                    4 & 0 & 0 \\
+                    0 & 2 & 0 \\
+                    0 & 0 & -2
+                \end{bmatrix} 
+            \end{split}
+        \end{equation*}
+    \end{minipage}%$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    
+    {\color{blue8} \rule{20cm}{0.3mm}}
+
+    (e)  $A = \begin{bmatrix}[cccc]
+            1 & 1 & 0 & 0\\
+            1 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 1 \\
+            0 & 0 & 1 & 1 
+        \end{bmatrix} \implies | \lambda I - A| = \begin{vmatrix}
+            \lambda  - 1 & -1 & 0 & 0 \\
+            -1 & \lambda  - 1 & 0 & 0 \\
+            0 & 0 & \lambda  - 1 & -1 \\
+            0 & 0 & -1 & \lambda  - 1
+        \end{vmatrix} = \left[ ( \lambda  - 1 )^2 - 1 \right]^2 = ( \lambda  - 2 )^2 \lambda ^2  $ 
+        
+        $\bullet$ For $ \lambda _1 = 2$: $2I - A = \begin{bmatrix}[rrrr]
+            1 & -1 & 0 & 0 \\
+            -1 & 1 & 0 & 0 \\
+            0 & 0 & 1 & -1 \\
+            0 & 0 & -1 & 1 
+        \end{bmatrix} \to \begin{bmatrix}[rrrr]
+            1 & -1 & 0 & 0 \\
+            0 & 0 & 1 & -1 \\
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 
+        \end{bmatrix} $. 
+
+        Let $s = x_2$ and $t = x_4$: $ \textbf{x} = s \begin{bmatrix}[r]
+            1 \\
+            1 \\
+            0 \\
+            0 
+        \end{bmatrix} + t \begin{bmatrix}[r]
+            0 \\
+            0 \\
+            1 \\
+            1 
+        \end{bmatrix} \implies \begin{cases}{}
+            \textbf{u}_1 = \left( \ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}} , 0, 0 \right) \\
+            \textbf{u}_2 = \left( 0, 0, \ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}}  \right) 
+        \end{cases}$
+
+        $\bullet$ For $ \lambda _2 = 0$: $0I - A = \begin{bmatrix}[rrrr]
+            -1 & -1 & 0 & 0 \\
+            -1 & -1 & 0 & 0 \\
+            0 & 0 & -1 & -1 \\
+            0 & 0 & -1 & -1 
+        \end{bmatrix} \to \begin{bmatrix}[rrrr]
+            1 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 1 \\
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 
+        \end{bmatrix} $.
+
+        Let $s = x_2$ and $t = x_4$: $ \textbf{x} = s \begin{bmatrix}[r]
+            -1 \\
+            1 \\
+            0 \\
+            0 
+        \end{bmatrix} + t \begin{bmatrix}[r]
+            0 \\
+            0 \\
+            -1 \\
+            1 
+        \end{bmatrix} = \begin{cases}{}
+            \textbf{u}_3 = \left( -\ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}} , 0, 0 \right) \\
+            \textbf{u}_4 = \left( 0, 0, -\ddfrac{1}{\sqrt{2}} , \ddfrac{1}{\sqrt{2}}  \right) 
+        \end{cases}$
+        \begin{equation*}
+            \begin{split}
+                P &= \begin{bmatrix}[rrrr]
+                    \ddfrac{1}{\sqrt{2}}  & 0 & -\ddfrac{1}{\sqrt{2}}  & 0 \\
+                    \ddfrac{1}{\sqrt{2}}  & 0 & \ddfrac{1}{\sqrt{2}}  & 0 \\
+                    0 & \ddfrac{1}{\sqrt{2}}  & 0 & -\ddfrac{1}{\sqrt{2}}  \\
+                    0 & \ddfrac{1}{\sqrt{2}}  & 0 & \ddfrac{1}{\sqrt{2}} 
+                \end{bmatrix}  \\
+                    P^TAP &= \begin{bmatrix}[rrrr]
+                        2 & 0 & 0 & 0 \\
+                        0 & 2 & 0 & 0 \\
+                        0 & 0 & 0 & 0 \\
+                        0 & 0 & 0 & 0 
+                    \end{bmatrix} 
+            \end{split}
+        \end{equation*}
+ 
+
+%#################################################################################################
+    \pagebreak
+
+    \begin{Ques}
+    \[ A = \begin{bmatrix}[rrr]
+        1 & a & 0 \\
+        a & 1 & 0 \\
+        0 & 0 & -3 
+    \end{bmatrix} , \quad a \in \R \]
+
+    
+    \end{Ques}
+
+
+    (a) Find the eigenvalues of $A$, then determine conditions on $a$ such that $A$ has 3 distinct eigenvalues.
+
+    \textit{\textcolor{blue5}{SOLUTION.}}  The characteristic polynomial of $A$ is
+    \begin{equation*}
+        \begin{split}
+            | \lambda I - A| &= \begin{vmatrix}[rrr]
+                \lambda  - 1 & -a & 0\\
+                -a & \lambda  - 1 & 0 \\
+                0 & 0 & \lambda  + 3 
+            \end{vmatrix} = ( \lambda + 3 ) \begin{vmatrix}[rr]
+                \lambda  - 1 & -a \\
+                -a & \lambda - 1
+            \end{vmatrix} \\
+                             &= ( \lambda + 3 )[\lambda  - (a + 1)][\lambda - (-a + 1)]
+        \end{split}
+    \end{equation*}
+    $A$ has 3 distinct eigenvalues $\Leftrightarrow \begin{cases}{}
+        a + 1 \ne -3 \\
+        -a + 1 \ne -3 \\
+        a + 1 \ne -a + 1
+    \end{cases} \implies \begin{cases}{}
+        a \ne \pm 4 \\
+        a \ne 0
+    \end{cases}$
+
+    (b) Let $a = 2$. Find an orthogonal matrix $P$ such that $P^TAP$ is diagonal and find that diagonal matrix.
+    
+    \textit{\textcolor{blue5}{SOLUTION.}}  Substuting $a = 2$ into the characteristic polynomial, obtain $ \begin{cases}{}
+        \lambda _1 = -3 \\
+        \lambda _2 = 3 \\
+        \lambda _3 = -1
+    \end{cases}$
+
+    $\bullet$ For $\lambda _1 = -3$:
+
+    $-3I - A = \begin{bmatrix}[rrr]
+        -4 & -2 & 0 \\
+        -2 & -4 & 0 \\
+        0 & 0 & 0 
+    \end{bmatrix} \to \begin{bmatrix}[ccc]
+        2 & 1 & 0 \\
+        0 & 3 & 0 \\
+        0 & 0 & 0 
+    \end{bmatrix} $. Let $s = x_3$, then $ \textbf{x} = \begin{bmatrix}[r]
+        0 \\ 0 \\ t 
+    \end{bmatrix} = t \begin{bmatrix}[r]
+        0 \\ 0 \\ 1 
+    \end{bmatrix} $$ \implies \textbf{u}_1 = (0,0,1)$
+
+    $\bullet$ For $ \lambda_2 = 3$: 
+   
+    $3I - A = \begin{bmatrix}[rrr]
+        2 & -2 & 0 \\
+        -2 & 2 & 0 \\
+        0 & 0 & 6 
+    \end{bmatrix} \to \begin{bmatrix}[rrr]
+        1 & -1 & 0 \\
+        0 & 0 & 1 \\
+        0 & 0 & 0 
+    \end{bmatrix} $. Let $s = x_2$, then $ \textbf{x} = \begin{bmatrix}[r]
+        s \\
+        s \\
+        0 
+    \end{bmatrix}  = s \begin{bmatrix}[r]
+        1 \\ 
+        1 \\
+        0 
+    \end{bmatrix}  \implies \textbf{u}_2 = \ddfrac{1}{\sqrt{2}} (1,1,0) = \left( \ddfrac{1}{\sqrt{2}} , 
+    \ddfrac{1}{\sqrt{2}} , 0\right) $
+
+    $\bullet$ For $ \lambda _3 = -1$:
+
+    $ \lambda I - A = \begin{bmatrix}[rrr]
+        -2 & -2 & 0 \\
+        -2 & -2 & 0 \\
+        0 & 0 & 2 
+    \end{bmatrix} \to \begin{bmatrix}[rrr]
+        1 & 1 & 0 \\
+        0 & 0 & 1 \\
+        0 & 0 & 0 
+    \end{bmatrix}.$ Let $s = x_2$, then $ \textbf{x} = \begin{bmatrix}[r]
+        -s \\
+        s \\
+        0 
+    \end{bmatrix} = s \begin{bmatrix}[r]
+        -1 \\
+        1 \\ 
+        0 
+    \end{bmatrix} \implies \textbf{u}_3 = \ddfrac{1}{\sqrt{2}} (-1,1,0) = \left( - \ddfrac{1}{\sqrt{2}} ,
+    \ddfrac{1}{\sqrt{2}} , 0\right)$ 
+     \begin{equation*}
+        \begin{split}
+            P &= [ \textbf{u}_1\text{ } \vdots \text{ }\textbf{u}_2 \text{  } \vdots \text{  }\textbf{u}_3 ] =  \begin{bmatrix}[rrr]
+        0 & \frac{1}{\sqrt{2}} & - \frac{1}{\sqrt{2}} \\
+        0 & \frac{1}{\sqrt{2}}& \frac{1}{\sqrt{2}} \\
+        1 & 0 & 0 
+    \end{bmatrix} \\
+                P^TAP &= \begin{bmatrix}[ccc]
+                    \lambda _1 & 0 & 0 \\
+                    0 & \lambda _2 & 0 \\
+                    0 & 0 & \lambda _3 
+                \end{bmatrix}  =  \begin{bmatrix}[rrr]
+                    -3 & 0 & 0 \\
+                    0 & 3 & 0 \\
+                    0 & 0 & -1 
+                \end{bmatrix} 
+        \end{split}
+    \end{equation*}
+\end{document}

@@ -1,0 +1,393 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{systeme}
+\usepackage[most]{tcolorbox}
+
+\usepackage[legalpaper,margin=1in]{geometry}
+
+\setlength{\parindent}{10pt}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.2}
+
+\title{SYSTEMS OF LINEAR EQUATIONS}
+\date{}
+
+\newcounter{example}[section]
+\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
+   \noindent \textbf{Example~\theexample. #1} \rmfamily}{\medskip}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand\y{\cellcolor{blue!10}}
+\newcommand\B{\textbf}
+
+\usepackage{tabularray}
+\SetTblrInner{colsep=5pt,rowsep=1pt}
+
+\newcommand\x{\times}
+
+\begin{document}
+    \section{Introduction to Systems of Linear Equations}
+    
+    In general, a \textbf{linear equation} in n variables is defined as follows:
+    \begin{tcolorbox}
+        A \textbf{linear equation in n variables} $x_1,x_2,\dots,x_n$ has the form
+        \begin{equation}
+            a_1x_1 + a_2x_2 + ... + a_nx_n = b.
+        \end{equation}
+        \begin{itemize}
+            \item         $a_1, a_2, \dots, a_n$ : \textbf{coefficients} (real nummbers)
+            \item         $b$ :  \textbf{constant term} (real number)
+        \end{itemize}
+        
+        $a_1$ : the \textbf{leading coefficients}\\
+        $x_1$ : \textbf{leading variable}
+    \end{tcolorbox}
+    
+    \textbf{Solution set} : The set of \textit{all solutions} of a linear equation.\\
+    When this set is found, the equation is said to be \textbf{solved}. To describe the entire solution set
+    of a linear equation, a \textbf{parametric representation} is used.
+
+    \begin{example}
+        Solve the linear equation $x_1 + 2x_2 = 4$.
+        \begin{enumerate}
+            \item Solve $x_1$ in terms of $x_2$, obtain 
+                \[x_1 = 4 - 2x_2\]
+                In this form, $x_2$ is \textbf{free} - it can take on any real value.\\
+                $x_1$ is not free since its value depends on the value assigned to $x_2$.
+            \item Represent the infinite number of solutions of this Eq, introduce a $3^{rd}$ var $t$ 
+                called a \textbf{parameter}.
+
+                $ \begin{cases}{}
+                    x_1 = 4 - 2t\\
+                    x_2 = t
+                \end{cases}$
+                , t is any real numbers.
+        \end{enumerate}
+    \end{example}
+
+    \subsubsection*{Parametric Representation of a Solution Set}
+    \begin{example}
+        \[3x + 2y - z = 3\]
+        Choosing $y$ and $z$ to be the free variables, obtain
+        \[x = 1 - \frac{2}{3}y + \frac{1}{3}z\]
+        Letting $y = s$ and $z = t$, obtain the parametric presentation
+        \[x = 1 - \frac{2}{3}s + \frac{1}{3}t, \quad y = s, \quad z = t \]
+        where $s$ and $t$ are any real numbers.
+    \end{example}
+
+    \subsection*{Systems of Linear Equations}
+
+    A \textbf{system of $m$ linear equation in $n$ variables}:
+    $  \begin{cases}{}
+        a_{11}x_1 + a_{12}x_2 + \dots  + a_{1n}x_n = b_1 \\
+        \vdots \\
+        a_{m1}x_1 + a_{m2}x_2 + \dots  + a_{mm}x_n = b_m
+    \end{cases}$
+
+    A system of linear equations can have exactly one solution, an infinite number of solutions, or no solution.
+
+\begin{itemize}
+    \item \textbf{consistent} : $\geq 1$ solution
+    \item \textbf{inconsistent} : no solution
+\end{itemize}
+
+    \subsection*{Solving a System of Linear Equations}
+
+    \systeme {
+        x - 2y + 3z = 9,
+        y + 3z = 5,
+        z = 2
+    }
+
+    This system is in \textbf{row-echelon form} (it follows a start-step pattern and has leading coefficients of 1). 
+    To solve such a system, use a procedure called \textbf{back-substitution} (work backward).
+
+    \subsection*{Gaussian Elimination}
+
+    2 S.LN are called \textbf{equivalent}: have the same \textbf{solution set}.
+
+    Changing the initial S.LN into an equivalent S.LN that is in  \textbf{row-echelon form}:
+    \begin{enumerate}
+        \item Interchange 2 equations
+        \item Multiply an Eq. by a nonzero constant
+        \item Add a multiple of an Eq. to another Eq.
+    \end{enumerate}
+
+
+    \section{Gaussian Elimination and Gauss-Jordan Elimination}
+        
+    This is a $m \times n$ matrix ($m$ by $n$ matrix) : 
+    $\begin{bmatrix}
+        a_{11} & a_{12} & \dots & a_{1n} \\
+        a_{21} & a_{22} & \dots & a_{2n} \\
+        \vdots & \vdots & & \vdots \\
+        a_{m1} & a_{m2} & \dots & a_{mn}
+    \end{bmatrix}$
+    \begin{itemize}
+        \item \textbf{entry} : $a_{ij}$
+        \item \textbf{row subscript} : $i$
+        \item \textbf{column subscript} : $j$
+        \item \textbf{main diagonal} : the line that contains the entries $a_{11}, a_{22}, \dots$ (main diagonal entries)
+    \end{itemize}
+    
+    $\begin{array}{ccc}
+        \text{System} & \text{Augmented Matrix} & \text{ Coefficient Matrix} \\
+        \systeme {
+            x - 4y + 3z = 5,
+            -x + 3y - z = -3,
+            2x - 4z = 6
+        }
+        & \begin{bmatrix}[ccc|c]
+            1  & -4 & 3 & 5\\
+            -1 & 3 & -1 & -3\\
+            2 & 0 & 4 & 6
+        \end{bmatrix}
+        & \begin{bmatrix}
+            1 & -4 & 3\\
+            -1 & 3 & -1\\
+            2 & 0 & 4
+        \end{bmatrix}
+    \end{array}$
+
+    \subsection*{Elementary Row Operations}
+    \begin{enumerate}
+        \item Interchange 2 Eq.
+            ($R_1 \leftrightarrow R_2$)
+        \item Multiply an Eq. by a nonzero constant. ($(\frac{1}{2}R_2) \rightarrow R_2$)
+        \item Add a multiple of an Eq. to another Eq. ($R_3 + (-2)R_1 \to R_3$)
+    \end{enumerate}
+
+    \subsubsection*{Row-equivalent matrices}
+    2 matrices are said to be \textbf{row-equivalent} if one can be obtained from the other by a finite sequence of 
+    elementary row operations.
+    
+    \subsubsection*{Row-echelon form \& Reduce Row-echelon form}
+    
+    Matrices in row-echelon form
+    \begin{equation*}\label{eq:appendrow}
+        \left[\begin{tblr}{
+        colspec = {cccc},
+        cell{1}{1} = {blue9},
+        cell{2}{1,2} = {blue9},
+        cell{3}{1,2,3} = {blue9}}
+        1 & 2 & -1 & 4 \\
+        0 & 1 & 0 & 3 \\
+        0 & 0 & 1 & -2
+         \end{tblr}\right] 
+         \quad
+        \left[\begin{tblr}{
+        cell{1}{1} = {blue9},
+        cell{2}{1,2,3} = {blue9},
+        cell{3}{1,2,3,4} = {blue9},
+        row{4} = {blue9}}
+            1 & -5 & 2 & -1 & 3\\
+            0 & 0 & 1 & 3 & -3\\
+            0 & 0 & 0 & 1 & 4\\
+            0 & 0 & 0 & 0 & 1
+         \end{tblr}\right]
+    \end{equation*}
+
+    Matrices in \textbf{reduced row-echelon form}
+    \begin{equation*}
+        \left[\begin{tblr}{
+        colspec = {cccc},
+        cell{1}{1,2} = {blue9},
+        cell{2}{1,2,3} = {blue9},
+        cell{3}{1,2,3,4} = {blue9}}
+        0 & 1 & 0 & 5 \\
+        0 & 0  & 1 & 3\\
+        0 & 0 & 0 & 0
+         \end{tblr}\right] 
+    \end{equation*}
+
+    \subsection*{Gauss-Jordan Elimination}
+
+    Just the same but it continues the reduction until a \textit{reduced row-echelon} form is obtained.
+
+    \begin{example}
+        \systeme {
+            x - 2y + 3z = 9,
+            -x + 3y = -4,
+            2x - 5y + 5z = 17
+        } \quad
+        $\begin{bmatrix}[ccc|c]
+            1 & -2 & 3 & 9\\
+            0 & 1 & 3 & -4\\
+            2 & -5 & 5 & 17
+        \end{bmatrix}$
+        $\implies \begin{bmatrix}[ccc|c]
+            1 & 0 & 0 & 1\\
+            0 & 1 & 0 & -1\\
+            0 & 0 & 1 & 2
+        \end{bmatrix}$
+    \end{example}
+
+    \begin{tcolorbox}
+        \textbf{What is better?}\\
+        S.Eq are usually solved by computer. Most computer programs use a form of Gaussian elimination,
+        with special emphasis on ways to reduce rounding errors and minimize storage of data.
+    \end{tcolorbox}
+
+    \section*{\textcolor{blue}{\textit{Homogeneous Systems of Linear Equations}}}
+    S.Eq in which each of the \textbf{constant terms} is $0$ - such systems are called \textbf{homogeneous}.
+    
+    \begin{equation*}
+        a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = 0 \\
+        \vdots \\
+        a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n = 0
+    \end{equation*}
+    
+    $\implies$ Definitely \textbf{consistent} (has at least 1 solution), that is 
+    \begin{equation*}
+        \text{\textbf{trivial (obvious) solution}}: x_1 = x_2 = \dots = x_n = 0
+    \end{equation*}
+
+    \begin{itemize}
+        \item fewer Eq. than variables $\to$ infinite number of solution
+        \item consistent
+    \end{itemize}
+
+
+
+    \iffalse
+\begin{equation}\label{eq:appendrow}
+  \left[\begin{tblr}{
+    colspec = {cccc},
+    row{1} = {red9},
+    row{3} = {blue9},
+    cell{5}{1,3} = {green9},
+  }
+    \x & \x & \x & \x \\
+     0 & \x & \x & \x \\
+     0 &  0 & \x & \x \\
+     0 &  0 &  0 & \x \\
+     a &  b &  c &  d \\
+  \end{tblr}\right)
+\end{equation}
+
+\begin{equation}
+  \left(\begin{tblr}{Q[c,olive9]cQ[c,yellow9]c}
+    \x & \x & \x & \x \\
+     0 & \x & \x & \x \\
+     0 &  0 & \x & \x \\
+     0 &  0 &  0 & \x \\
+     a &  b &  c &  d \\
+  \end{tblr}\right)
+\end{equation}
+    \fi
+    
+
+
+
+    \section{Applications of Systems of Linear Equations}
+
+    \subsection{Polynomial Curve Fitting}
+    
+    Suppose a collection of data is represented by $n$ points in the $xy$-plane,\\
+    \quad $(x_1,y_1), (x_2,y_2), \dots, (x_n, y_n)$
+
+    Find a polynominal function of degree $n - 1$
+
+    \quad $p(x) = a_0 + a_1x + \dots + a_{n-1}x^{n-1}$\\
+    whose graph pass through the specified points.
+
+    If all $x$-coordinates of the points are distinct, there is precisely 1 polynominal function
+    of degree $n - 1$ (or less) that fits the $n$ points.
+
+    Let $a_0, a_1, \dots, a_{n-1}$ be the n \textbf{variables} and substitute each of the $n$ points into the polynominal
+    function 
+    \begin{equation*}
+        \begin{split}
+            a_0 + a_1x_1 + \dots + a_{n-1}x_1^{n-1} & = y_1\\
+            a_0 + a_1x_2 + \dots + a_{n-1}x_2^{n-1} & = y_2\\
+       &   \vdots \\
+            a_0 + a_1x_n + \dots + a_{n-1}x_n^{n-1} & =  y_n
+        \end{split}
+    \end{equation*}
+
+    \subsubsection*{What if the $x$-values are large ?}
+
+    \subsection*{Translating Large $x$-Values Before Curve Fitting}
+
+    \begin{equation*}
+        \overbrace{(2006, 3)}^{(x_1,y_1)}, \quad
+        \overbrace{(2007, 5)}^{(x_2, y_2)}, \quad
+        \overbrace{(2008, 1)}^{(x_3, y_3)}, \quad
+        \overbrace{(2009, 4)}^{(x_4, y_4)}, \quad
+        \overbrace{(2010, 10)}^{(x_5, y_5)}, \quad
+    \end{equation*}
+    
+    Translation $z = x - 2008$ to obtain
+    \begin{equation*}
+        \overbrace{(-2, 3)}^{(z_1,y_1)}, \quad
+        \overbrace{(-1, 5)}^{(z_2, y_2)}, \quad
+        \overbrace{(0, 1)}^{(z_3, y_3)}, \quad
+        \overbrace{(1, 4)}^{(z_4, y_4)}, \quad
+        \overbrace{(2, 10)}^{(z_5, y_5)}, \quad
+    \end{equation*}
+
+    \[ \implies p(z) = 1 - \frac{5}{4}z  + \frac{101}{24}z^2 + \frac{3}{4}z^3 - \frac{17}{24}z^4.\]
+
+    \begin{tcolorbox}
+    \[ \implies p(=x) = 1 - \frac{5}{4}(x - 2008)  + \frac{101}{24}(x - 2008)^2 + \frac{3}{4}(x-2008)^3 - \frac{17}{24}(x - 2008)^4.\]
+    \end{tcolorbox}
+
+    \subsection*{Network Analysis}
+    
+    Network composed of \textbf{branches} and \textbf{junctions} - are used as models in economics, traffic analysis, and engineering.
+
+    Assume in each of the junctions: \[ \sum \text{flow}_{in} = \sum \text{flow}_{out}\]
+    Solve the linear equations for all junctions.
+    
+    \subsubsection*{Kirchhoff's Laws}
+    \begin{enumerate}
+        \item All the current flowing into a junction must flow out of it.
+        \item The sum of $IR$  around a closed path is equal to the total voltage in the path.
+    \end{enumerate}
+    
+    \section*{PROJECT}
+
+    \subsection{Graphing Linear Equations}
+
+    \subsection{Underdetermined and Overdetermined Systems of Equations}
+
+    \begin{itemize}
+        \item \textbf{underdetermined} : more \textbf{var} than \textbf{eq}
+        \item \bf{overdetermined} : less \bf{var} than \bf{eq} 
+    \end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
