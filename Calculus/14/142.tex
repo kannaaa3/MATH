@@ -416,5 +416,72 @@ Evaluating $f$ at these 4 points, we find that $f_ \text{max} = f(0, \pm 1) = 2$
 \end{minipage}
 
 {\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{\faIcon{map-marker-alt} EXAMPLE.}}} Find the points on the sphere $x^2 + y^2 + z^2 = 4 $ that are closest and farthest from $(3,1,-1)$.
+
+\begin{minipage}[]{0.34\linewidth}
+  \includegraphics[width = 5 cm]{./images/lagrange4.png}
+  
+\end{minipage}
+\begin{minipage}[]{0.63\linewidth}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{SOLUTION.}}} We want to minimize and maximize 
+\[d^2 = (x-3)^2 + (y-1)^2 + (z + 1)^2 \]
+The constraint is that the point $(x,y,z)$ lies on the sphere, that is 
+\[g(x,y,z) = x^2 + y^2 + z^2 = 4  \]
+According to the method of Lagrange multipliers, we solve $\nabla f = \lambda \nabla g, g = 4 $, which gives 
+\begin{equation*}
+  \begin{split}
+    2(x- 3) = 2x \lambda \\ 
+    2(y-1) = 2y \lambda \\
+    2(z + 1) = 2z \lambda \\ 
+    x^2 + y^2 + z^2 = 4     
+  \end{split}
+\end{equation*}
+  
+\end{minipage}
+
+Hence, we got $x = \cfrac{3 }{1 - \lambda }, y = \cfrac{1 }{1 - \lambda }, z = - \cfrac{1 }{ 1 - \lambda }   $. Then we have 
+\[ \cfrac{3^2 }{(1- \lambda )^2} + \cfrac{1^2 }{(1 - \lambda )^2 } + \cfrac{(-1)^2 }{(1 - \lambda )^2} = 4\]
+which gives $\lambda = 1 \pm \cfrac{\sqrt{11 }}{2 }$, which give the corresponding $(x,y,z)$ 
+\[\left( \cfrac{6 }{\sqrt{11}}, \cfrac{2 }{ \sqrt{11 }}, - \cfrac{2 }{\sqrt{11 }} \right) \quad \text{and} \quad \left( - \cfrac{6 }{\sqrt{11 }}, - \cfrac{2 }{\sqrt{11 }}, \cfrac{2 }{\sqrt{11 }} \right)\]
+which is the closest and farthest point, respectively.
+
+\subsection*{{\fontfamily{lmss}\selectfont \textcolor{blue5}{\faIcon{anchor} \underline{Two Constraints}}}}
+We want to find the maximum and minimum values of $f(x,y,z)$ subject to 2 constraints of the form $g(x,y,z) = k $ and $g(x,y,z) = c $. Geometrically, we are looking for the extreme values of $f$ when $(x,y,z)$ lies on the curve of intersection $C$ of $g$ and $h$. 
+\begin{mdframed}
+  \[\nabla f(x_0, y_0, z_0) = \lambda \nabla g(x_0, y_0, z_0) + \mu \nabla h (x_0, y_0, z_0 )\]
+\end{mdframed}
+Solving 5 equations 
+\begin{equation*}
+  \begin{split}
+    f_x  = \lambda g_x + \mu h_x \\
+    f_y  = \lambda g_y + \mu h_y \\
+    f_z  = \lambda g_z + \mu h_z \\
+    g(x,y,z) = k \\
+    h(x,y,z) = c
+  \end{split}
+\end{equation*}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{\faIcon{map-marker-alt} EXAMPLE.}}} Find the maximum value of $f(x,y,z) = x + 2y + 3z$ on the curve of intersection  of the plane $x - y + z = 1 $ and the cylinder $x^2 + y^2 = 1 $.
+
+\begin{minipage}[]{0.3\linewidth}
+  \includegraphics[width = 4.3 cm]{./images/2constraints.png}
+  
+\end{minipage}
+\begin{minipage}[]{0.67\linewidth}
+{\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{SOLUTION.}}} 
+We maximize $f(x,y,z) = x + 2y + 3z $. We solve the equations 
+\begin{equation*}
+  \begin{split}
+    1 & = \lambda + 2x \mu \\
+    2 & = - \lambda + 2y \mu \\ 
+    3 &  = \lambda \\
+    x & - y + z = 1 \\
+    x^2 &  + y^2 = 1 
+  \end{split}
+\end{equation*}
+We get $x = -1/\mu , y = 5 / (2 \mu  )$. 
+\[\cfrac{1 }{\mu ^2 } + \cfrac{25 }{4 \mu ^2 } = 1 \]
+and so $\mu = \pm \frac{\sqrt{29} }{2 }$  . Then $x = \mp 2/ \sqrt{29 }, y = \pm 5 / \sqrt{29 }, z = 1 \pm 7/ \sqrt{29 }  $. The corresponding values of $f $ are $3 \pm \sqrt{29 }$. The maximum value of $f$ on the given curve is $3 + \sqrt{29 }$.
+  
+\end{minipage}
+
 \end{document}
 

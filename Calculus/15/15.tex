@@ -375,14 +375,33 @@ Since $-1 \le \sin{x} \le 1 $ and $-1 \le \cos{y} \le 1 $, we have $-1 \le \sin{
   \[D = \{(r, \theta) \text{ }  | \text{ } -\pi/4 \le \theta \le \pi/4, 0 \le r \le \cos{2\theta }\}\]
   So the area is 
     \begin{equation*}
-      \begin{split}
-        A(D) & = \iint \limits_{D }\, dA = \int_{- \pi / 4 }^{\pi / 4   } \int_0^{\cos{2\theta}} r \,dr\,d\theta \\ 
-             & =\int_{- \pi / 4 }^{\pi / 4   }  \left[ \frac{1}{2}r^2  \right]_0^{\cos{2\theta}} = \frac{1}{2}\int_{- \pi / 4 }^{\pi / 4   }  \cos{2\theta}^2 \, d\theta \\ 
-             & = \frac{1}{4} \int_{- \pi / 4 }^{\pi / 4   } ( 1 + \cos{4 \theta }) \, d\theta = \frac{1}{4}  \left[ \theta + \frac{1}{4} \sin{4 \theta } \right]_{- \pi /4 }^{\pi / 4    } = \frac{\pi }{ 8 }
-      \end{split}
+        \begin{split}
+            A(D) & = \iint \limits_{D }\, dA = \int_{- \pi / 4 }^{\pi / 4   } \int_0^{\cos{2\theta}} r \,dr\,d\theta \\ 
+                 & =\int_{- \pi / 4 }^{\pi / 4   }  \left[ \frac{1}{2}r^2  \right]_0^{\cos{2\theta}} = \frac{1}{2}\int_{- \pi / 4 }^{\pi / 4   }  \cos{2\theta}^2 \, d\theta \\ 
+                 & = \frac{1}{4} \int_{- \pi / 4 }^{\pi / 4   } ( 1 + \cos{4 \theta }) \, d\theta = \frac{1}{4}  \left[ \theta + \frac{1}{4} \sin{4 \theta } \right]_{- \pi /4 }^{\pi / 4    } = \frac{\pi }{ 8 }
+        \end{split}
     \end{equation*}
     
   \end{minipage}
-  
+ 
+  {\fontfamily{lmtt}\selectfont \textbf{\textcolor{blue5}{\faIcon{map-marker-alt} EXAMPLE.}}}  $z = x^2 + y^2 $, $x^2 + y^2 = 2x $.
+
+  \begin{center}
+\includegraphics[width=10 cm]{images/2022-04-04-14-21-24.png}
+    \end{center}  
+
+
+% x = rcosx + 1, y = r sin x 
+\[D = \{ (r, \theta) \text{ } | \text{ } -\pi / 2 \le \theta \le \pi / 2 , 0 \le r \le 2 \cos{\theta } \} \]
+\begin{equation*}
+  \begin{split}
+    V & \iint \limits_{D } (x^2 + y ^2 ) \, dA =  \int_{ -\pi /2 }^{\pi /2  } \int_{0}^{2 \cos{theta }} r^2 r \, dr \, d \theta \\ 
+      & = 4 \int_{-\pi / 2  }^{\pi / 2  } \cos{\theta}^4 \, d\theta = 8 \int_0^{\pi / 2 } \cos{\theta}^4 \, d\theta = 8 \int_0^{\pi / 2} \left( \frac{1 + \cos{2\theta}}{2 } \right)^2 \, d\theta \\ 
+      & = 2 \left[ \frac{3}{2} \theta + \sin{2\theta}  + \frac{1}{8} \sin{4\theta}\right]_0^{\pi / 2  } = 2 \left( \cfrac{3 }{2 }  \right) \left( \cfrac{\pi }{2 } \right) = \cfrac{3 \pi }{2 } 
+  \end{split}
+\end{equation*}
+Why split into 2 parts?
+
+
 
 \end{document}
